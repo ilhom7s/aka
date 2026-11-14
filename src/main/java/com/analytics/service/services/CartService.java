@@ -30,21 +30,26 @@ public class CartService {
     private static final int RECOMMENDATIONS_LIMIT = 10;
 
     @Transactional
-    public void addProductInCart(String loginToken, Long productId, Integer quantity){
-        if(quantity == null || quantity < 1) throw new IllegalArgumentException("Количество должно быть больше 0");
+    public void addProductInCart(String loginToken, Long productId, Integer quantity) {
+        if (quantity == null || quantity < 1) {
+            throw new IllegalArgumentException("Количество должно быть больше 0");
+        }
+
         User user = userService.findUserByEmailOrPhone(loginToken);
+        ProductVariant product = repositoryProduct.findById(productId)
+                .orElseThrow(() -> new NotFoundException("Товар не найден"));
 
-        ProductVariant product = repositoryProduct.findById(productId).orElseThrow(() -> new NotFoundException("Товар не найден"));
+        Optional<CartItem> existingOpt = cartRepository.findByUserIdAndVariantId(user.getId(), productId);
 
-        CartItem existing = cartRepository.findByUserIdAndVariantId(user.getId(), productId).orElseThrow(()->
-                new NotFoundException("Товар не найден в корзине")
-        );
+        int currentQty = existingOpt.map(CartItem::getQuantity).orElse(0);
+        int total = currentQty + quantity;
 
-        int total = (existing != null ? existing.getQuantity() : 0) + quantity;
+        if (product.getQuantity() == null || product.getQuantity() < total) {
+            throw new IllegalArgumentException("Количество товара на складе недостаточно");
+        }
 
-        if(product.getQuantity() < total) throw new IllegalArgumentException("Количество товара на складе недостаточно");
-
-        if(existing != null){
+        if (existingOpt.isPresent()) {
+            CartItem existing = existingOpt.get();
             existing.setQuantity(total);
             cartRepository.save(existing);
         } else {
