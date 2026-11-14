@@ -55,7 +55,7 @@ public class ProfileService {
         if(changeEmail.newEmail().equals(user.getEmail())){
             throw new RuntimeException("Новая почта должна отличаться от старой");
         }
-        if(userRepository.exitsByEmail(changeEmail.newEmail())){
+        if(userRepository.existsByEmail(changeEmail.newEmail())){
             throw new AlreadyExistException(String.format("Почта %s занята",changeEmail.newEmail()));
         }
         try{
@@ -72,7 +72,7 @@ public class ProfileService {
         if(changePhone.newPhone().equals(user.getUserPhone())){
             throw new RuntimeException("Новый номер должен отличаться от старой");
         }
-        if(userRepository.existsByPhone(changePhone.newPhone())) throw new AlreadyExistException(String.format("Номер %s занят", changePhone.newPhone()));
+        if(userRepository.existsByUserPhone(changePhone.newPhone())) throw new AlreadyExistException(String.format("Номер %s занят", changePhone.newPhone()));
         try{
             user.setUserPhone(changePhone.newPhone());
         } catch (DataIntegrityViolationException exception) {

@@ -14,6 +14,7 @@ import java.util.Optional;
 public interface CartItemRepository extends JpaRepository<CartItem, Long> {
 
     // Найти всю корзину конкретного пользователя
+    @EntityGraph(attributePaths = "productVariant")
     List<CartItem> findByUserId(Long userId);
 
     // Проверить, лежит ли уже конкретное кимоно в корзине этого пользователя

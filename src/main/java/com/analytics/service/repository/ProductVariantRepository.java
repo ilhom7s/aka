@@ -16,7 +16,8 @@ import java.util.Optional;
 public interface ProductVariantRepository extends JpaRepository<ProductVariant, Long> {
 
     /* Пояса — отдельная категория product_id = 'K'. */
-    @Query("SELECT p FROM ProductVariant p WHERE p.productId = 'K' AND (p.active IS NULL OR p.active = true)")
+
+    @Query("SELECT p FROM ProductVariant p  WHERE p.productId = 'K' AND (p.active IS NULL OR p.active = true)")
     List<ProductVariant> findAllK();
     /* Витрина "Все" — сгруппировано по product_id/size/color/price (как было). */
     @Query(value = "SELECT MAX(id) as id, product_id, size, color, SUM(quantity) as quantity, price, " +

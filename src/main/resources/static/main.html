@@ -354,6 +354,22 @@ html.no-intro body{overflow:auto;}
 .reveal.in{transform:none;}
 
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ===== Плитки категорий: фото + подпись по центру ===== */
+.cat{background:linear-gradient(160deg,var(--wine),var(--wine-dark));}
+.cat__bg{position:absolute;inset:0;z-index:0;background-size:cover;background-position:center;
+    transition:transform .7s cubic-bezier(.16,1,.3,1);}
+.cat:hover .cat__bg{transform:scale(1.12);}
+.cat::before{z-index:1;opacity:1;transform:none;
+    background:linear-gradient(180deg,rgba(42,20,24,.30),rgba(78,10,18,.80));transition:background .3s;}
+.cat:hover::before{background:linear-gradient(180deg,rgba(107,15,25,.35),rgba(78,10,18,.88));}
+.cat.is-active::before{background:linear-gradient(180deg,rgba(107,15,25,.55),rgba(78,10,18,.92));}
+.cat.is-active{box-shadow:0 0 0 3px var(--wine),0 26px 44px -22px rgba(107,15,25,.7);}
+.cat::after{z-index:1;}
+.cat__label{z-index:2;color:var(--cream)!important;text-transform:uppercase;letter-spacing:.14em;
+    font-family:var(--sans);font-size:19px;font-weight:700;text-align:center;
+    text-shadow:0 2px 14px rgba(0,0,0,.55);}
+@media(max-width:768px){.cat__label{font-size:15px;letter-spacing:.08em;}}
 </style>
 </head>
 <body class="loading">
@@ -430,26 +446,26 @@ html.no-intro body{overflow:auto;}
     <div class="hero__inner">
         <div class="hero__eyebrow">AKA · Экипировка для единоборств</div>
         <h1 class="hero__title">Кимоно, достойное твоего пути</h1>
-        <p class="hero__sub">Настоящая форма для дзюдо, каратэ, тхэквондо и самбо. Плотный хлопок, честное плетение, проверенные бренды — для зала, татами и соревнований.</p>
+        <p class="hero__sub">Настоящая форма для дзюдо, каратэ, тхэквондо и самбо. Плотный хлопок, честное плетение, высокая качества — для зала, и для соревнований.</p>
     </div>
 </section>
 <div class="diag"></div>
 
 <div class="marquee">
     <div class="marquee__track">
-        <span>Бесплатная доставка от 5000 ₽</span><span>Оригинальная экипировка</span><span>Плотность 350–650 г/м²</span><span>Размеры от 110 до 200</span>
-        <span>Бесплатная доставка от 5000 ₽</span><span>Оригинальная экипировка</span><span>Плотность 350–650 г/м²</span><span>Размеры от 110 до 200</span>
+        <span>Доставка по всей России</span><span>Экипировка высого качества</span><span>Плотность 350–650 г/м²</span><span>Размеры от 110 до 200</span>
+        <span>Доставка по всей России</span><span>Экипировка высого качества</span><span>Плотность 350–650 г/м²</span><span>Размеры от 110 до 200</span>
     </div>
 </div>
 
 <section class="promo reveal" id="promo">
     <div class="promo__text">
         <h2>Форма, которая выдержит любой спарринг</h2>
-        <p>Мы отбираем кимоно и защиту, которым доверяют тренеры и спортсмены. Ничего лишнего — только качество, проверенное татами.</p>
+        <p>Мы шьем кимоно и защиту, которым доверяют тренеры и спортсмены. Ничего лишнего - только качество, проверенное годами.</p>
         <div class="promo__list">
-            <div class="promo__item"><span class="promo__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></span><div><b>Только оригинал</b><span>Проверенные бренды и честная плотность ткани.</span></div></div>
-            <div class="promo__item"><span class="promo__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 7h11l3 4v6h-3"/><circle cx="7.5" cy="17" r="2"/><circle cx="17.5" cy="17" r="2"/></svg></span><div><b>Быстрая доставка</b><span>По всей России, бесплатно от 5000 ₽.</span></div></div>
-            <div class="promo__item"><span class="promo__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 4 6v6c0 5 8 8 8 8s8-3 8-8V6z"/></svg></span><div><b>Гарантия и возврат</b><span>14 дней на обмен, если размер не подошёл.</span></div></div>
+            <div class="promo__item"><span class="promo__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg></span><div><b>Кимоно из 100% хлопка</b><span>Высокая качество и честная плотность ткани.</span></div></div>
+            <div class="promo__item"><span class="promo__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 7h11l3 4v6h-3"/><circle cx="7.5" cy="17" r="2"/><circle cx="17.5" cy="17" r="2"/></svg></span><div><b>Быстрая доставка</b><span>По всей России.</span></div></div>
+            <div class="promo__item"><span class="promo__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 4 6v6c0 5 8 8 8 8s8-3 8-8V6z"/></svg></span><div><b>Гарантия и возврат</b><span>Обменяем если размер не подошёл.</span></div></div>
         </div>
     </div>
     <div class="promo__art"><img src="aka-logo.png" alt="AKA"></div>
@@ -476,7 +492,7 @@ html.no-intro body{overflow:auto;}
             </div>
         </div>
         <div><h4>Каталог</h4><a href="#" data-cat="judo">Дзюдо</a><a href="#" data-cat="karate">Каратэ</a><a href="#" data-cat="taekwondo">Тхэквондо</a><a href="#" data-cat="sambo">Самбо</a><a href="#" data-cat="belts">Пояса</a></div>
-        <div><h4>Магазин</h4><a href="#">Про нас</a><a href="#">Оптовикам</a><a href="#">Доставка и оплата</a><a href="#">Возврат</a></div>
+        <div><h4>Магазин</h4><a href="#">Про нас</a><a href="#">Оптовикам</a><a href="delivery.html">Доставка и оплата</a><a href="#">Возврат</a></div>
         <div><h4>Контакты</h4><a href="tel:+70000000000">+7 (999) 532-01-50</a><a href="mailto:info@aka.ru">info@aka.ru</a><a href="profile.html">Личный кабинет</a></div>
     </div>
     <div class="footer__bottom">© 2026 AKA — экипировка для единоборств.</div>
@@ -493,8 +509,12 @@ const ENDPOINT = {
     taekwondo:'/catalog/k4', sambo:'/catalog/k5', belts:'/catalog/k'
 };
 const CATS = [
-    {key:'all',label:'Все'},{key:'judo',label:'Дзюдо'},{key:'karate',label:'Каратэ'},
-    {key:'taekwondo',label:'Тхэквондо'},{key:'sambo',label:'Самбо'},{key:'belts',label:'Пояса'}
+    {key:'all',      label:'Все',       img:'ССЫЛКА_НА_ФОТО'},
+    {key:'judo',     label:'Дзюдо',     img:'https://judoforpeace.net/WebRoot/vilkasfi02/Shops/2017042517/MediaGallery/International-Judo-Federation-IJF-logo.png'},
+    {key:'karate',   label:'Каратэ',    img:'https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f3/World_Karate_Federation_logo.svg/330px-World_Karate_Federation_logo.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail'},
+    {key:'taekwondo',label:'Тхэквондо', img:'https://i.namu.wiki/i/xJfM1z_T_cj253GJjtn-CU0RuRhLSEs6FSd-wra3zl-rUCni_TFWf0aqoF58MrQcv0ypfLjF4Du6bUQ1X3xh6g.webp'},
+    {key:'sambo',    label:'Самбо',     img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReTYE11TaykpYFJxm0sAqLFJBYe3NfHeapZhMrrMPElg&s=10'},
+    {key:'belts',    label:'Пояса',     img:'ССЫЛКА_НА_ФОТО'}
 ];
 const PID_LABEL = {K7:'Дзюдо',K1:'Каратэ',K4:'Тхэквондо',K5:'Самбо',K:'Пояса'};
 const catIcons = {
@@ -522,7 +542,7 @@ function normBelt(b){
 
 /* категории (тайлы) */
 const catsBox=document.getElementById('cats');
-catsBox.innerHTML=CATS.map(c=>`<div class="cat ${c.key===activeCat?'is-active':''}" data-cat="${c.key}"><div class="cat__ic">${catIcons[c.key]||''}</div><div class="cat__label">${c.label}</div></div>`).join('');
+catsBox.innerHTML=CATS.map(c=>`<div class="cat ${c.key===activeCat?'is-active':''}" data-cat="${c.key}"><div class="cat__bg" style="background-image:url('${c.img}')"></div><div class="cat__label">${c.label}</div></div>`).join('');
 
 const grid=document.getElementById('grid');
 

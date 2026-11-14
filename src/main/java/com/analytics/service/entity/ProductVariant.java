@@ -2,6 +2,7 @@ package com.analytics.service.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ public class ProductVariant {
     @OrderBy("position ASC")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
+    @BatchSize(size = 50)
     private List<ProductImage> images = new ArrayList<>();
 
     /** Удобный метод: сохраняет двунаправленную связь в целостности. */

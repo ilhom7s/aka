@@ -1,100 +1,101 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AKA — Вход</title>
-<style>
-:root{
-    --wine:#6B0F19;--wine-dark:#4E0A12;--wine-soft:rgba(107,15,25,.10);--wine-line:rgba(107,15,25,.16);
-    --beige:#F3EBDC;--cream:#FBF6EC;--cream-2:#FDFAF3;--ink:#2A1418;--muted:#8C6F63;--ok:#3B7A4B;
-    --shadow:0 30px 70px -30px rgba(42,20,24,.55);
-    --serif:"Iowan Old Style","Palatino Linotype","Book Antiqua",Georgia,serif;
-    --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-}
-*{box-sizing:border-box;}
-html,body{margin:0;height:100%;}
-body{font-family:var(--sans);color:var(--ink);
-    background:radial-gradient(1200px 600px at 80% -10%, rgba(107,15,25,.06), transparent 60%),var(--beige);
-    display:flex;align-items:center;justify-content:center;min-height:100vh;padding:28px;}
-.auth{width:min(1000px,100%);display:grid;grid-template-columns:1.05fr 1fr;background:var(--cream);
-    border-radius:22px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--wine-line);min-height:620px;}
-.brandside{position:relative;background:linear-gradient(160deg,var(--wine) 0%,var(--wine-dark) 100%);
-    color:var(--cream);padding:44px 42px;display:flex;flex-direction:column;overflow:hidden;}
-.brandside::before{content:"";position:absolute;inset:0;
-    background:repeating-linear-gradient(45deg,rgba(251,246,236,.04) 0 2px,transparent 2px 22px);pointer-events:none;}
-.brandside__top{position:relative;z-index:2;}
-.brand__logo{display:block;width:190px;max-width:70%;height:auto;}
-.brand__sub{margin-top:14px;font-size:12.5px;letter-spacing:.24em;text-transform:uppercase;color:rgba(251,246,236,.7);}
-.brand__tag{position:relative;z-index:2;margin-top:auto;font-family:var(--serif);font-size:26px;line-height:1.35;max-width:320px;}
-.brand__note{position:relative;z-index:2;margin-top:16px;font-size:13.5px;color:rgba(251,246,236,.66);max-width:300px;}
-.formside{padding:44px 46px;display:flex;flex-direction:column;background:var(--cream);}
-.tabs{display:inline-flex;gap:4px;background:var(--cream-2);border:1px solid var(--wine-line);border-radius:12px;padding:4px;align-self:flex-start;}
-.tab{border:none;background:transparent;font:inherit;font-size:14.5px;padding:9px 20px;border-radius:9px;cursor:pointer;color:var(--muted);transition:.18s;}
-.tab.is-active{background:var(--wine);color:var(--cream);font-weight:600;}
-.head{margin:30px 0 22px;}
-.head h1{font-family:var(--serif);font-size:32px;margin:0;}
-.head p{margin:8px 0 0;color:var(--muted);font-size:14px;}
-.method{position:relative;display:grid;grid-template-columns:1fr 1fr;background:var(--cream-2);border:1px solid var(--wine-line);border-radius:11px;padding:4px;margin-bottom:18px;}
-.method__slider{position:absolute;top:4px;left:4px;width:calc(50% - 4px);height:calc(100% - 8px);background:var(--wine);border-radius:8px;transition:transform .22s ease;}
-.method.phone .method__slider{transform:translateX(100%);}
-.method button{position:relative;z-index:2;border:none;background:transparent;font:inherit;font-size:13.5px;font-weight:600;padding:9px 0;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:7px;transition:color .2s;}
-.method.email button[data-m="email"],.method.phone button[data-m="phone"]{color:var(--cream);}
-.form{display:flex;flex-direction:column;gap:14px;}
-.field{display:flex;flex-direction:column;gap:6px;}
-.field>span{font-size:13px;color:var(--muted);}
-.control{position:relative;display:flex;align-items:center;}
-.control>svg{position:absolute;left:13px;width:18px;height:18px;color:var(--muted);pointer-events:none;}
-.control input{width:100%;font:inherit;color:var(--ink);background:var(--cream-2);border:1px solid var(--wine-line);border-radius:11px;padding:13px 46px 13px 42px;transition:.16s;}
-.control input:focus{outline:none;border-color:var(--wine);box-shadow:0 0 0 3px var(--wine-soft);background:#fff;}
-.eye{position:absolute;right:8px;background:none;border:none;cursor:pointer;color:var(--muted);padding:6px;display:flex;align-items:center;justify-content:center;border-radius:8px;}
-.eye:hover{background:var(--wine-soft);}
-.eye svg{width:18px;height:18px;display:block;}
-.row{display:flex;align-items:center;justify-content:space-between;margin-top:2px;gap:10px;flex-wrap:wrap;}
-.check{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--muted);cursor:pointer;}
-.check input{accent-color:var(--wine);width:16px;height:16px;}
-.link{color:var(--wine);font-size:13.5px;text-decoration:none;font-weight:600;cursor:pointer;}
-.link:hover{text-decoration:underline;}
-.submit{margin-top:6px;background:var(--wine);color:var(--cream);border:none;border-radius:12px;font:inherit;font-weight:600;font-size:15.5px;padding:14px;cursor:pointer;transition:.15s;}
-.submit:hover{background:var(--wine-dark);}
-.submit:active{transform:translateY(1px);}
-.submit:disabled{opacity:.6;cursor:default;}
-.msg{font-size:13.5px;min-height:18px;margin-top:2px;}
-.msg.err{color:#a12;}
-.msg.ok{color:var(--ok);}
-.foot{margin-top:auto;padding-top:20px;text-align:center;color:var(--muted);font-size:14px;}
-.foot a{color:var(--wine);font-weight:600;text-decoration:none;cursor:pointer;}
-.foot a:hover{text-decoration:underline;}
-.pane{display:none;animation:fade .25s ease;}
-.pane.is-active{display:flex;flex-direction:column;}
-@keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-@media(max-width:820px){
-    body{padding:0;align-items:flex-start;}
-    .auth{grid-template-columns:1fr;min-height:auto;width:100%;border-radius:0;border:none;box-shadow:none;}
-    /* тонкая шапка: только логотип по центру, обрезаться нечему */
-    .brandside{padding:16px 20px;flex-direction:row;align-items:center;justify-content:center;overflow:visible;}
-    .brandside__top{width:auto;display:flex;align-items:center;}
-    .brand__logo{width:auto;height:38px;max-width:none;}
-    .brand__sub{display:none;}
-    .brand__tag{display:none;}
-    .brand__note{display:none;}
-    .formside{padding:24px 20px 34px;}
-    .grid2{grid-template-columns:1fr;}
-    .head{margin:20px 0 16px;}
-    .head h1{font-size:25px;}
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AKA — Вход</title>
+    <style>
+        :root{
+            --wine:#6B0F19;--wine-dark:#4E0A12;--wine-soft:rgba(107,15,25,.10);--wine-line:rgba(107,15,25,.16);
+            --beige:#F3EBDC;--cream:#FBF6EC;--cream-2:#FDFAF3;--ink:#2A1418;--muted:#8C6F63;--ok:#3B7A4B;
+            --shadow:0 30px 70px -30px rgba(42,20,24,.55);
+            --serif:"Iowan Old Style","Palatino Linotype","Book Antiqua",Georgia,serif;
+            --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+        }
+        *{box-sizing:border-box;}
+        html,body{margin:0;height:100%;}
+        body{font-family:var(--sans);color:var(--ink);
+            background:var(--cream);
+            margin:0;padding:0;min-height:100vh;min-height:100dvh;}
+        .auth{width:100%;min-height:100vh;min-height:100dvh;display:grid;grid-template-columns:1.05fr 1fr;
+            background:var(--cream);border-radius:0;border:none;box-shadow:none;overflow:hidden;}
+        .brandside{position:relative;background:linear-gradient(160deg,var(--wine) 0%,var(--wine-dark) 100%);
+            color:var(--cream);padding:44px 42px;display:flex;flex-direction:column;overflow:hidden;}
+        .brandside::before{content:"";position:absolute;inset:0;
+            background:repeating-linear-gradient(45deg,rgba(251,246,236,.04) 0 2px,transparent 2px 22px);pointer-events:none;}
+        .brandside__top{position:relative;z-index:2;}
+        .brand__logo{display:block;width:190px;max-width:70%;height:auto;}
+        .brand__sub{margin-top:14px;font-size:12.5px;letter-spacing:.24em;text-transform:uppercase;color:rgba(251,246,236,.7);}
+        .brand__tag{position:relative;z-index:2;margin-top:auto;font-family:var(--serif);font-size:26px;line-height:1.35;max-width:320px;}
+        .brand__note{position:relative;z-index:2;margin-top:16px;font-size:13.5px;color:rgba(251,246,236,.66);max-width:300px;}
+        .formside{padding:44px 6%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--cream);}
+        .formside > *{width:100%;max-width:460px;}
+        .tabs{display:inline-flex;gap:4px;background:var(--cream-2);border:1px solid var(--wine-line);border-radius:12px;padding:4px;align-self:auto;}
+        .tab{flex:1;border:none;background:transparent;font:inherit;font-size:14.5px;padding:9px 20px;border-radius:9px;cursor:pointer;color:var(--muted);transition:.18s;}
+        .tab.is-active{background:var(--wine);color:var(--cream);font-weight:600;}
+        .head{margin:30px 0 22px;}
+        .head h1{font-family:var(--serif);font-size:32px;margin:0;}
+        .head p{margin:8px 0 0;color:var(--muted);font-size:14px;}
+        .method{position:relative;display:grid;grid-template-columns:1fr 1fr;background:var(--cream-2);border:1px solid var(--wine-line);border-radius:11px;padding:4px;margin-bottom:18px;}
+        .method__slider{position:absolute;top:4px;left:4px;width:calc(50% - 4px);height:calc(100% - 8px);background:var(--wine);border-radius:8px;transition:transform .22s ease;}
+        .method.phone .method__slider{transform:translateX(100%);}
+        .method button{position:relative;z-index:2;border:none;background:transparent;font:inherit;font-size:13.5px;font-weight:600;padding:9px 0;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:7px;transition:color .2s;}
+        .method.email button[data-m="email"],.method.phone button[data-m="phone"]{color:var(--cream);}
+        .form{display:flex;flex-direction:column;gap:14px;}
+        .field{display:flex;flex-direction:column;gap:6px;}
+        .field>span{font-size:13px;color:var(--muted);}
+        .control{position:relative;display:flex;align-items:center;}
+        .control>svg{position:absolute;left:13px;width:18px;height:18px;color:var(--muted);pointer-events:none;}
+        .control input{width:100%;font:inherit;color:var(--ink);background:var(--cream-2);border:1px solid var(--wine-line);border-radius:11px;padding:13px 46px 13px 42px;transition:.16s;}
+        .control input:focus{outline:none;border-color:var(--wine);box-shadow:0 0 0 3px var(--wine-soft);background:#fff;}
+        .eye{position:absolute;right:8px;background:none;border:none;cursor:pointer;color:var(--muted);padding:6px;display:flex;align-items:center;justify-content:center;border-radius:8px;}
+        .eye:hover{background:var(--wine-soft);}
+        .eye svg{width:18px;height:18px;display:block;}
+        .row{display:flex;align-items:center;justify-content:space-between;margin-top:2px;gap:10px;flex-wrap:wrap;}
+        .check{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--muted);cursor:pointer;}
+        .check input{accent-color:var(--wine);width:16px;height:16px;}
+        .link{color:var(--wine);font-size:13.5px;text-decoration:none;font-weight:600;cursor:pointer;}
+        .link:hover{text-decoration:underline;}
+        .submit{margin-top:6px;background:var(--wine);color:var(--cream);border:none;border-radius:12px;font:inherit;font-weight:600;font-size:15.5px;padding:14px;cursor:pointer;transition:.15s;}
+        .submit:hover{background:var(--wine-dark);}
+        .submit:active{transform:translateY(1px);}
+        .submit:disabled{opacity:.6;cursor:default;}
+        .msg{font-size:13.5px;min-height:18px;margin-top:2px;}
+        .msg.err{color:#a12;}
+        .msg.ok{color:var(--ok);}
+        .foot{margin-top:auto;padding-top:20px;text-align:center;color:var(--muted);font-size:14px;}
+        .foot a{color:var(--wine);font-weight:600;text-decoration:none;cursor:pointer;}
+        .foot a:hover{text-decoration:underline;}
+        .pane{display:none;animation:fade .25s ease;}
+        .pane.is-active{display:flex;flex-direction:column;}
+        @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+        .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+        @media(max-width:820px){
+            body{padding:0;}
+            .auth{grid-template-columns:1fr;grid-template-rows:auto 1fr;min-height:100vh;min-height:100dvh;width:100%;}
+            /* тонкая шапка: только логотип по центру, обрезаться нечему */
+            .brandside{padding:16px 20px;flex-direction:row;align-items:center;justify-content:center;overflow:visible;}
+            .brandside__top{width:auto;display:flex;align-items:center;}
+            .brand__logo{width:auto;height:38px;max-width:none;}
+            .brand__sub{display:none;}
+            .brand__tag{display:none;}
+            .brand__note{display:none;}
+            .formside{padding:24px 20px 34px;justify-content:flex-start;}
+            .grid2{grid-template-columns:1fr;}
+            .head{margin:20px 0 16px;}
+            .head h1{font-size:25px;}
+        }
+    </style>
 </head>
 <body>
 <div class="auth">
     <div class="brandside">
         <div class="brandside__top">
             <img class="brand__logo" src="aka-logo.png" alt="AKA">
-            <div class="brand__sub">Экипировка для единоборств</div>
+            <div class="brand__sub">Экипировка для единоборств<br><br>30 лет на рынке России</div>
         </div>
         <div class="brand__tag">Дисциплина начинается с правильного кимоно.</div>
-        <div class="brand__note">Войдите, чтобы управлять каталогом, заказами и клиентами магазина.</div>
+        <div class="brand__note"></div>
     </div>
 
     <div class="formside">
@@ -113,7 +114,7 @@ body{font-family:var(--sans);color:var(--ink);
             <div class="form">
                 <div class="field" id="field-email">
                     <span>Электронная почта</span>
-                    <div class="control"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><input type="email" id="login-email" placeholder="admin@aka.ru"></div>
+                    <div class="control"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><input type="email" id="login-email" placeholder="example@aka.ru"></div>
                 </div>
                 <div class="field" id="field-phone" style="display:none">
                     <span>Номер телефона</span>
@@ -155,92 +156,92 @@ body{font-family:var(--sans);color:var(--ink);
 </div>
 
 <script>
-const API = (location.protocol === "file:" || location.port === "5500") ? "http://localhost:8081" : "";
-// Витрина магазина (обычные пользователи уходят сюда)
-const MAIN_SITE = "main.html";
+    const API = (location.protocol === "file:" || location.port === "5500") ? "http://localhost:8081" : "";
+    // Витрина магазина (обычные пользователи уходят сюда)
+    const MAIN_SITE = "main.html";
 
-/* Куда вернуть после входа. Разрешаем только свои страницы — защита от open redirect. */
-function afterLoginTarget(){
-    const t = sessionStorage.getItem("aka_after_login");
-    sessionStorage.removeItem("aka_after_login");
-    return (t && /^\/[A-Za-z0-9_\-]+\.html(\?[A-Za-z0-9_=&%.\-]*)?$/.test(t)) ? t : null;
-}
-function homeFor(role){
-    return (role||"").toUpperCase().includes("ADMIN") ? "index.html" : MAIN_SITE;
-}
+    /* Куда вернуть после входа. Разрешаем только свои страницы — защита от open redirect. */
+    function afterLoginTarget(){
+        const t = sessionStorage.getItem("aka_after_login");
+        sessionStorage.removeItem("aka_after_login");
+        return (t && /^\/[A-Za-z0-9_\-]+\.html(\?[A-Za-z0-9_=&%.\-]*)?$/.test(t)) ? t : null;
+    }
+    function homeFor(role){
+        return (role||"").toUpperCase().includes("ADMIN") ? "index.html" : MAIN_SITE;
+    }
 
-/* Уже вошёл: админ → админка, покупатель → главная (раньше всех кидало в админку) */
-if (localStorage.getItem("aka_token")) {
-    location.replace(afterLoginTarget() || homeFor(localStorage.getItem("aka_role")));
-}
+    /* Уже вошёл: админ → админка, покупатель → главная (раньше всех кидало в админку) */
+    if (localStorage.getItem("aka_token")) {
+        location.replace(afterLoginTarget() || homeFor(localStorage.getItem("aka_role")));
+    }
 
-function val(id){ return document.getElementById(id).value.trim(); }
-function msg(id, text, isErr){
-    const el = document.getElementById(id);
-    el.textContent = text || "";
-    el.className = "msg " + (isErr ? "err" : "ok");
-}
-function switchTab(name){
-    document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('is-active',t.dataset.tab===name));
-    document.getElementById('pane-login').classList.toggle('is-active',name==='login');
-    document.getElementById('pane-register').classList.toggle('is-active',name==='register');
-}
-document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
-const method=document.getElementById('method');
-method.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
-    const m=b.dataset.m;
-    method.classList.toggle('email',m==='email');
-    method.classList.toggle('phone',m==='phone');
-    document.getElementById('field-email').style.display = m==='email'?'flex':'none';
-    document.getElementById('field-phone').style.display = m==='phone'?'flex':'none';
-}));
-function togglePw(id,btn){
-    const input=document.getElementById(id);
-    const show=input.type==='password';
-    input.type=show?'text':'password';
-    btn.style.color=show?'var(--wine)':'var(--muted)';
-}
-async function doLogin(){
-    const useEmail = document.getElementById('field-email').style.display !== 'none';
-    const login = useEmail ? val('login-email') : val('login-phone');
-    const password = val('pw1');
-    msg('login-msg','');
-    if(!login || !password){ msg('login-msg','Заполните логин и пароль', true); return; }
-    const btn=document.getElementById('login-btn'); btn.disabled=true;
-    try{
-        const res = await fetch(API+'/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({login,password})});
-        if(res.status===401){ msg('login-msg','Неверный логин или пароль', true); return; }
-        if(!res.ok){ msg('login-msg','Ошибка '+res.status, true); return; }
-        const data = await res.json();
-        const role = (data.role||'').toUpperCase();
-        localStorage.setItem('aka_token', data.token);
-        localStorage.setItem('aka_role', data.role);
-        localStorage.setItem('aka_email', data.email||'');
-        location.href = afterLoginTarget() || homeFor(role);   // вернуть туда, откуда пришёл
-    }catch(e){ msg('login-msg','Сервер недоступен', true); }
-    finally{ btn.disabled=false; }
-}
-async function doRegister(){
-    const email=val('reg-email'), phone=val('reg-phone'), p1=val('pw2'), p2=val('reg-pw2');
-    msg('reg-msg','');
-    if(!email && !phone){ msg('reg-msg','Укажите почту или телефон', true); return; }
-    if(!p1){ msg('reg-msg','Введите пароль', true); return; }
-    if(p1!==p2){ msg('reg-msg','Пароли не совпадают', true); return; }
-    const btn=document.getElementById('reg-btn'); btn.disabled=true;
-    try{
-        const res = await fetch(API+'/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email||null,password:p1,userPhone:phone||null})});
-        if(!res.ok){ const t=await res.text().catch(()=> ''); msg('reg-msg', t || ('Ошибка '+res.status), true); return; }
-        const data = await res.json().catch(()=>null);
-        if(data && data.token){
+    function val(id){ return document.getElementById(id).value.trim(); }
+    function msg(id, text, isErr){
+        const el = document.getElementById(id);
+        el.textContent = text || "";
+        el.className = "msg " + (isErr ? "err" : "ok");
+    }
+    function switchTab(name){
+        document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('is-active',t.dataset.tab===name));
+        document.getElementById('pane-login').classList.toggle('is-active',name==='login');
+        document.getElementById('pane-register').classList.toggle('is-active',name==='register');
+    }
+    document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>switchTab(t.dataset.tab)));
+    const method=document.getElementById('method');
+    method.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+        const m=b.dataset.m;
+        method.classList.toggle('email',m==='email');
+        method.classList.toggle('phone',m==='phone');
+        document.getElementById('field-email').style.display = m==='email'?'flex':'none';
+        document.getElementById('field-phone').style.display = m==='phone'?'flex':'none';
+    }));
+    function togglePw(id,btn){
+        const input=document.getElementById(id);
+        const show=input.type==='password';
+        input.type=show?'text':'password';
+        btn.style.color=show?'var(--wine)':'var(--muted)';
+    }
+    async function doLogin(){
+        const useEmail = document.getElementById('field-email').style.display !== 'none';
+        const login = useEmail ? val('login-email') : val('login-phone');
+        const password = val('pw1');
+        msg('login-msg','');
+        if(!login || !password){ msg('login-msg','Заполните логин и пароль', true); return; }
+        const btn=document.getElementById('login-btn'); btn.disabled=true;
+        try{
+            const res = await fetch(API+'/auth/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({login,password})});
+            if(res.status===401){ msg('login-msg','Неверный логин или пароль', true); return; }
+            if(!res.ok){ msg('login-msg','Ошибка '+res.status, true); return; }
+            const data = await res.json();
+            const role = (data.role||'').toUpperCase();
             localStorage.setItem('aka_token', data.token);
-            localStorage.setItem('aka_role', data.role||'');
+            localStorage.setItem('aka_role', data.role);
             localStorage.setItem('aka_email', data.email||'');
-        }
-        msg('reg-msg','Аккаунт создан!', false);
-        setTimeout(()=>{ location.href = afterLoginTarget() || MAIN_SITE; }, 700);
-    }catch(e){ msg('reg-msg','Сервер недоступен', true); }
-    finally{ btn.disabled=false; }
-}
+            location.href = afterLoginTarget() || homeFor(role);   // вернуть туда, откуда пришёл
+        }catch(e){ msg('login-msg','Сервер недоступен', true); }
+        finally{ btn.disabled=false; }
+    }
+    async function doRegister(){
+        const email=val('reg-email'), phone=val('reg-phone'), p1=val('pw2'), p2=val('reg-pw2');
+        msg('reg-msg','');
+        if(!email && !phone){ msg('reg-msg','Укажите почту или телефон', true); return; }
+        if(!p1){ msg('reg-msg','Введите пароль', true); return; }
+        if(p1!==p2){ msg('reg-msg','Пароли не совпадают', true); return; }
+        const btn=document.getElementById('reg-btn'); btn.disabled=true;
+        try{
+            const res = await fetch(API+'/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email||null,password:p1,userPhone:phone||null})});
+            if(!res.ok){ const t=await res.text().catch(()=> ''); msg('reg-msg', t || ('Ошибка '+res.status), true); return; }
+            const data = await res.json().catch(()=>null);
+            if(data && data.token){
+                localStorage.setItem('aka_token', data.token);
+                localStorage.setItem('aka_role', data.role||'');
+                localStorage.setItem('aka_email', data.email||'');
+            }
+            msg('reg-msg','Аккаунт создан!', false);
+            setTimeout(()=>{ location.href = afterLoginTarget() || MAIN_SITE; }, 700);
+        }catch(e){ msg('reg-msg','Сервер недоступен', true); }
+        finally{ btn.disabled=false; }
+    }
 </script>
 </body>
 </html>
