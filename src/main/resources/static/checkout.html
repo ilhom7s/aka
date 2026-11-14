@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AKA — Оформление заказа</title>
+<style>
+:root{--wine:#6B0F19;--wine-dark:#4E0A12;--wine-2:#8A1522;--wine-soft:rgba(107,15,25,.09);--wine-line:rgba(107,15,25,.15);
+--beige:#F3EBDC;--cream:#FBF6EC;--cream-2:#FDFAF3;--ink:#2A1418;--muted:#8C6F63;--ok:#3B7A4B;
+--serif:"Iowan Old Style","Palatino Linotype","Book Antiqua",Georgia,serif;
+--sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+--shadow:0 22px 50px -30px rgba(42,20,24,.5);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--sans);color:var(--ink);font-size:15px;line-height:1.55;min-height:100vh;
+background:radial-gradient(1000px 460px at 88% -10%, rgba(107,15,25,.06), transparent 62%), var(--beige);}
+a{color:inherit;text-decoration:none;}
+img{display:block;max-width:100%;}
+.header{position:sticky;top:0;z-index:50;background:linear-gradient(160deg,var(--wine),var(--wine-dark));box-shadow:0 12px 30px -22px rgba(0,0,0,.7);}
+.header::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(45deg,rgba(251,246,236,.05) 0 2px,transparent 2px 22px);}
+.header__in{position:relative;z-index:2;max-width:1000px;margin:0 auto;height:78px;padding:0 24px;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;}
+.back{width:40px;height:40px;border-radius:50%;border:1px solid rgba(251,246,236,.3);background:rgba(251,246,236,.1);
+color:var(--cream);display:flex;align-items:center;justify-content:center;transition:.18s;}
+.back svg{width:19px;height:19px;}
+.back:hover{background:var(--cream);color:var(--wine);transform:translateX(-3px);}
+.logo{justify-self:center;} .logo img{height:54px;}
+.wrap{max-width:1000px;margin:0 auto;padding:30px 24px 60px;}
+h1{font-family:var(--serif);font-size:32px;margin-bottom:6px;}
+.sub{color:var(--muted);margin-bottom:24px;}
+.layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start;}
+.card{background:var(--cream);border:1px solid var(--wine-line);border-radius:20px;padding:26px;box-shadow:var(--shadow);animation:in .4s ease both;}
+@keyframes in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.card h2{font-family:var(--serif);font-size:21px;margin-bottom:16px;}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:15px;}
+.field span{font-size:13px;color:var(--muted);}
+.field input,.field textarea{font:inherit;color:var(--ink);background:var(--cream-2);border:1px solid var(--wine-line);
+border-radius:12px;padding:13px 15px;transition:.16s;width:100%;}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--wine);box-shadow:0 0 0 3px var(--wine-soft);background:#fff;}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.items{display:flex;flex-direction:column;gap:12px;}
+.item{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;padding:12px;border:1px solid var(--wine-line);border-radius:14px;background:var(--cream-2);}
+.item img{width:64px;height:78px;object-fit:cover;border-radius:10px;}
+.item__n{font-family:var(--serif);font-size:16px;}
+.item__m{color:var(--muted);font-size:13px;margin-top:3px;}
+.item__s{font-weight:800;color:var(--wine);white-space:nowrap;}
+.summary{position:sticky;top:96px;}
+.srow{display:flex;justify-content:space-between;padding:8px 0;color:var(--muted);font-size:14.5px;}
+.srow b{color:var(--ink);}
+.total{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--wine-line);margin-top:10px;padding-top:15px;}
+.total span{color:var(--muted);} .total b{font-size:28px;color:var(--wine);}
+.btn{width:100%;margin-top:16px;font:inherit;font-weight:700;font-size:15.5px;border:none;border-radius:13px;padding:16px;cursor:pointer;
+background:linear-gradient(160deg,var(--wine),var(--wine-dark));color:var(--cream);box-shadow:0 14px 30px -16px rgba(107,15,25,.8);
+position:relative;overflow:hidden;transition:.15s;}
+.btn:hover{filter:brightness(1.08);}
+.btn:disabled{opacity:.55;cursor:default;filter:none;}
+.btn::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(251,246,236,.28),transparent);transform:skewX(-20deg);}
+.btn:hover::after{animation:shine .75s ease;}
+@keyframes shine{to{left:130%}}
+.note{font-size:12.5px;color:var(--muted);text-align:center;margin-top:10px;}
+.msg{min-height:20px;font-size:13.5px;margin-top:8px;}
+.msg.err{color:#a12;}
+.empty{text-align:center;padding:60px 20px;color:var(--muted);}
+@media(max-width:860px){.layout{grid-template-columns:1fr;}.summary{position:static;}.row{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<header class="header"><div class="header__in">
+    <a href="cart.html" class="back" aria-label="Назад"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg></a>
+    <a class="logo" href="main.html"><img src="aka-logo-light.png" alt="AKA"></a>
+    <span></span>
+</div></header>
+
+<div class="wrap">
+    <h1>Оформление заказа</h1>
+    <p class="sub">Укажите адрес и телефон — и переходите к оплате.</p>
+    <div id="content"><div class="empty">Загружаем…</div></div>
+</div>
+
+<script>
+const API=(location.protocol==="file:"||location.port==="5500")?"http://localhost:8081":"";
+const TOKEN=localStorage.getItem("aka_token");
+let ITEMS=[];
+
+function goLogin(){
+    sessionStorage.setItem("aka_after_login",location.pathname+location.search);
+    location.replace("login.html");
+}
+if(!TOKEN) goLogin();
+
+function money(n){return (n==null?0:Number(n)).toLocaleString("ru-RU");}
+function esc(s){return String(s??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;").replace(/'/g,"&#39;");}
+function imgUrl(u){
+    if(!u) return "";
+    if(/^https?:\/\//.test(u)) return u;
+    return u.startsWith("/") ? API+u : "";          // только наши относительные пути
+}
+function headers(e){return Object.assign({"Authorization":"Bearer "+TOKEN},e||{});}
+function isId(v){return /^\d+$/.test(v||"");}
+
+/* Источник товаров: ?buy=<variantId>&qty=N ("Купить") или выбранные позиции корзины */
+async function load(){
+    const p=new URLSearchParams(location.search);
+    const buy=p.get("buy");
+    try{
+        if(buy!==null){
+            const qty=Number(p.get("qty")||1);
+            if(!isId(buy)||!Number.isInteger(qty)||qty<1||qty>99){ ITEMS=[]; return render(); }
+            const cat=p.get("category")||"";
+            const card=await fetch(API+"/catalog/product/"+encodeURIComponent(cat)).then(r=>r.ok?r.json():null).catch(()=>null);
+            const v=card&&card.variants?card.variants.find(x=>String(x.variantId)===buy):null;
+            if(!v){ ITEMS=[]; return render(); }
+            ITEMS=[{variantId:Number(buy),name:card.name||"Товар",color:v.color||"",size:v.size||"",
+                    price:Number(v.price),amount:qty,
+                    image:v.images&&v.images.length?v.images[0].imageUrl:(v.imageUrl||"")}];
+        }else{
+            const r=await fetch(API+"/cart/all",{headers:headers()});
+            if(r.status===401){ localStorage.removeItem("aka_token"); return goLogin(); }
+            const list=r.ok?await r.json():[];
+            // оформляем только то, что отмечено галочками в корзине
+            let picked=null;
+            try{ picked=JSON.parse(sessionStorage.getItem("aka_checkout_ids")||"null"); }catch(e){}
+            ITEMS=(list||[]).map(raw=>{
+                const v=raw.productVariant||{};
+                const imgs=(v.images&&v.images.length)?v.images.map(i=>i.imageUrl):(v.imageUrl?[v.imageUrl]:[]);
+                return {variantId:raw.variantId??v.id,name:v.productName??"Товар",color:v.color??"",size:v.size??"",
+                        price:Number(v.price??0),amount:Number(raw.amount??1),image:imgs[0]||""};
+            }).filter(i=>!Array.isArray(picked)||picked.includes(i.variantId));
+        }
+    }catch(e){ console.warn("Не удалось загрузить товары:",e); ITEMS=[]; }
+    render();
+}
+
+function render(){
+    const box=document.getElementById("content");
+    if(!ITEMS.length){
+        box.innerHTML=`<div class="empty">Нет товаров для оформления.<br><br><a href="main.html" style="color:var(--wine);font-weight:700">В каталог</a></div>`;
+        return;
+    }
+    box.innerHTML=`
+    <div class="layout">
+        <div>
+            <div class="card">
+                <h2>Доставка</h2>
+                <div class="field"><span>Адрес доставки</span>
+                    <textarea id="address" rows="2" maxlength="300" placeholder="Город, улица, дом, квартира"></textarea></div>
+                <div class="row">
+                    <div class="field"><span>Телефон</span><input type="tel" id="phone" maxlength="20" placeholder="+7 999 000-00-00"></div>
+                    <div class="field"><span>Имя получателя</span><input type="text" id="name" maxlength="80" placeholder="Илхомжон"></div>
+                </div>
+                <div class="msg err" id="msg"></div>
+            </div>
+            <div class="card" style="margin-top:20px">
+                <h2>Ваш заказ</h2>
+                <div class="items">${ITEMS.map(i=>`
+                    <div class="item">
+                        <img src="${esc(imgUrl(i.image))}" alt="" onerror="this.style.visibility='hidden'">
+                        <div><div class="item__n">${esc(i.name)}</div>
+                            <div class="item__m">${esc([i.color,i.size?("размер "+i.size):""].filter(Boolean).join(" · "))} · ${i.amount} шт</div></div>
+                        <div class="item__s">${money(i.price*i.amount)} ₽</div>
+                    </div>`).join("")}</div>
+            </div>
+        </div>
+        <aside class="card summary">
+            <h2>Итого</h2>
+            <div class="srow"><span>Товары</span><b id="q-goods">…</b></div>
+            <div class="srow"><span>Доставка</span><b id="q-ship">…</b></div>
+            <div class="total"><span>К оплате</span><b id="q-total">…</b></div>
+            <button class="btn" id="pay" disabled>Перейти к оплате</button>
+            <div class="note">Оплата картой через ЮKassa</div>
+        </aside>
+    </div>`;
+    document.getElementById("pay").addEventListener("click",e=>pay(e.currentTarget));
+    loadQuote();
+}
+
+/* Сумму считает сервер — показываем ровно то, что будет списано */
+async function loadQuote(){
+    try{
+        const r=await fetch(API+"/orders/quote",{method:"POST",headers:{"Content-Type":"application/json"},
+            body:JSON.stringify(ITEMS.map(i=>({variantId:i.variantId,quantity:i.amount})))});
+        if(!r.ok) throw new Error(await r.text().catch(()=> "")||("Ошибка "+r.status));
+        const q=await r.json();
+        document.getElementById("q-goods").textContent=money(q.goods)+" ₽";
+        document.getElementById("q-ship").textContent=Number(q.shipping)>0?money(q.shipping)+" ₽":"бесплатно";
+        document.getElementById("q-total").textContent=money(q.total)+" ₽";
+        document.getElementById("pay").disabled=false;
+    }catch(e){
+        document.getElementById("msg").textContent="Не удалось рассчитать сумму: "+(e.message||"ошибка");
+    }
+}
+
+async function pay(btn){
+    const address=document.getElementById("address").value.trim();
+    const phone=document.getElementById("phone").value.trim();
+    const msg=document.getElementById("msg");
+    msg.textContent="";
+    if(address.length<5){ msg.textContent="Укажите полный адрес доставки"; return; }
+    if(!/^[+\d][\d\s()\-]{9,19}$/.test(phone)){ msg.textContent="Укажите корректный телефон"; return; }
+
+    btn.disabled=true; btn.textContent="Создаём платёж…";
+    const ctrl=new AbortController();
+    const timer=setTimeout(()=>ctrl.abort(),40000);          // сервер не ответил — не висим молча
+    try{
+        const res=await fetch(API+"/orders",{method:"POST",signal:ctrl.signal,
+            headers:headers({"Content-Type":"application/json"}),
+            body:JSON.stringify({address,phone,list:ITEMS.map(i=>({variantId:i.variantId,quantity:i.amount}))})});
+        if(res.status===401){ localStorage.removeItem("aka_token"); return goLogin(); }
+        if(!res.ok) throw new Error(await res.text().catch(()=> "")||("Ошибка "+res.status));
+        const data=await res.json();
+        if(!data.confirmationUrl||!/^https:\/\//.test(data.confirmationUrl))
+            throw new Error("Платёжный сервис не вернул ссылку на оплату");
+        sessionStorage.setItem("aka_order",String(data.orderId));
+        sessionStorage.removeItem("aka_checkout_ids");
+        location.href=data.confirmationUrl;                  // уходим на страницу оплаты ЮKassa
+    }catch(e){
+        msg.textContent=(e.name==="AbortError")
+            ? "Платёжный сервис не отвечает. Попробуйте ещё раз."
+            : (e.message||"Не удалось оформить заказ");
+        btn.disabled=false; btn.textContent="Перейти к оплате";
+    }finally{ clearTimeout(timer); }
+}
+load();
+</script>
+</body>
+</html>

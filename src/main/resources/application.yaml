@@ -1,0 +1,38 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: service
+  datasource:
+    url: jdbc:postgresql://localhost:5433/akadb
+    username: akauser
+    password: sultonov6240ii
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 30MB
+
+# Каталог, куда сохраняются загруженные фото товаров
+app:
+  upload:
+    dir: uploads
+  jwt:
+    secret: SuperSecretKeyForAkaAdminChangeMe12345
+    expiration: 86400000   # 24 часа в мс
+  yookassa:
+    shop-id: ${YOOKASSA_SHOP_ID:1471281}
+    secret-key: ${YOOKASSA_SECRET_KEY:test_ucwOhwR3Sozh3c9sGmqqyOIjwS1g9GFJu6YIu71jfLA}   # задаётся переменной окружения, в файле не хранить
+    api-url: https://api.yookassa.ru/v3
+    return-url: http://localhost:8081/payment-return.html
+
+logging:
+  level:
+    com.analytics.service: DEBUG

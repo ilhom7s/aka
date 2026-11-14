@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AKA — Панель администратора</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="layout">
+    <!-- Боковая панель -->
+    <aside class="sidebar">
+        <div class="brand">
+            <span class="brand__mark">AKA</span>
+            <span class="brand__sub">Панель администратора</span>
+        </div>
+        <nav class="nav">
+            <button class="nav__item is-active" data-view="products">Товары</button>
+            <button class="nav__item" data-view="belts">Пояса</button>
+            <button class="nav__item" data-view="orders">Заказы</button>
+            <button class="nav__item" data-view="users">Пользователи</button>
+            <button class="nav__item" data-view="finder">Заказы клиента</button>
+        </nav>
+        <div class="sidebar__foot">
+            <span class="dot" id="conn-dot"></span>
+            <span id="conn-text">Подключение…</span>
+        </div>
+        <button class="logout" id="logout-btn">Выйти</button>
+    </aside>
+
+    <!-- Рабочая область -->
+    <main class="main">
+        <!-- ТОВАРЫ -->
+        <section class="view is-active" id="view-products">
+            <header class="view__head">
+                <div>
+                    <h1 class="view__title">Товары</h1>
+                    <p class="view__hint">У каждой карточки — от 3 до 5 фото.</p>
+                </div>
+                <button class="btn btn--primary" id="btn-add">Добавить товар</button>
+            </header>
+            <div class="grid" id="products-grid"></div>
+        </section>
+
+        <!-- ПОЯСА -->
+        <section class="view" id="view-belts">
+            <header class="view__head">
+                <div>
+                    <h1 class="view__title">Пояса</h1>
+                    <p class="view__hint">У каждого пояса — от 3 до 5 фото.</p>
+                </div>
+                <button class="btn btn--primary" id="btn-add-belt">Добавить пояс</button>
+            </header>
+            <div class="grid" id="belts-grid"></div>
+        </section>
+
+        <!-- ЗАКАЗЫ -->
+        <section class="view" id="view-orders">
+            <header class="view__head">
+                <div>
+                    <h1 class="view__title">Заказы</h1>
+                    <p class="view__hint">Отслеживайте оплату и доставку.</p>
+                </div>
+                <div class="segmented" id="orders-filter">
+                    <button class="segmented__btn is-active" data-filter="all">Все</button>
+                    <button class="segmented__btn" data-filter="orders">Активные</button>
+                    <button class="segmented__btn" data-filter="delivered">Доставленные</button>
+                </div>
+            </header>
+            <div class="stack" id="orders-list"></div>
+        </section>
+
+        <!-- ПОЛЬЗОВАТЕЛИ -->
+        <section class="view" id="view-users">
+            <header class="view__head">
+                <div>
+                    <h1 class="view__title">Пользователи</h1>
+                    <p class="view__hint">Зарегистрированные покупатели.</p>
+                </div>
+            </header>
+            <div class="table-wrap">
+                <table class="table" id="users-table">
+                    <thead>
+                    <tr><th>ID</th><th>Email</th><th>Телефон</th></tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </section>
+        <!-- ЗАКАЗЫ КЛИЕНТА (поиск) -->
+        <section class="view" id="view-finder">
+            <header class="view__head">
+                <div>
+                    <h1 class="view__title">Заказы клиента</h1>
+                    <p class="view__hint">Клиент назвал почту или телефон — найдите его заказы.</p>
+                </div>
+            </header>
+            <div class="finder__bar">
+                <input type="text" id="finder-input" placeholder="Почта или телефон клиента">
+                <button class="btn btn--primary" id="finder-btn">Найти</button>
+            </div>
+            <div id="finder-user"></div>
+            <div class="stack" id="finder-list"></div>
+        </section>
+    </main>
+</div>
+
+<!-- Модальное окно формы товара -->
+<div class="modal" id="modal" aria-hidden="true">
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="form-title">
+        <div class="modal__head">
+            <h2 id="form-title">Новый товар</h2>
+            <button class="modal__close" data-close aria-label="Закрыть">×</button>
+        </div>
+        <form id="product-form" class="form">
+            <input type="hidden" id="f-id">
+            <div class="form__row">
+                <label class="field">
+                    <span>Артикул (product_id)</span>
+                    <input type="text" id="f-productId" placeholder="K7" required>
+                </label>
+                <label class="field">
+                    <span>Название</span>
+                    <input type="text" id="f-productName" placeholder="Кимоно для дзюдо" required>
+                </label>
+            </div>
+            <label class="field">
+                <span>Описание</span>
+                <textarea id="f-description" rows="3" placeholder="Плотный хлопок, двойное плетение…"></textarea>
+            </label>
+            <div class="form__row">
+                <label class="field">
+                    <span>Цвет</span>
+                    <input type="text" id="f-color" placeholder="Белый">
+                </label>
+                <label class="field">
+                    <span>Размер</span>
+                    <input type="text" id="f-size" placeholder="170">
+                </label>
+            </div>
+            <div class="form__row">
+                <label class="field">
+                    <span>Материал</span>
+                    <input type="text" id="f-material" placeholder="100% хлопок">
+                </label>
+                <label class="field">
+                    <span>Плотность, г/м²</span>
+                    <input type="number" id="f-plotnost" placeholder="450">
+                </label>
+            </div>
+            <div class="form__row">
+                <label class="field">
+                    <span>Цена, ₽</span>
+                    <input type="number" step="0.01" id="f-price" placeholder="5990" required>
+                </label>
+                <label class="field">
+                    <span>Количество</span>
+                    <input type="number" id="f-quantity" placeholder="12" required>
+                </label>
+            </div>
+
+            <div class="uploader">
+                <div class="uploader__top">
+                    <span>Фотографии</span>
+                    <span class="uploader__count" id="img-count">0 из 3–5</span>
+                </div>
+                <label class="dropzone" id="dropzone">
+                    <input type="file" id="f-images" accept="image/*" multiple hidden>
+                    <span class="dropzone__text">Выберите 3–5 изображений</span>
+                </label>
+                <p class="uploader__note" id="edit-note" hidden>
+                    При изменении: оставьте пустым, чтобы сохранить текущие фото, или выберите новые 3–5 — они заменят галерею.
+                </p>
+                <div class="previews" id="previews"></div>
+            </div>
+
+            <div class="form__actions">
+                <button type="button" class="btn btn--ghost" data-close>Отмена</button>
+                <button type="submit" class="btn btn--primary" id="submit-btn">Сохранить товар</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Модальное окно формы пояса -->
+<div class="modal" id="belt-modal" aria-hidden="true">
+    <div class="modal__backdrop" data-close-belt></div>
+    <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="belt-form-title">
+        <div class="modal__head">
+            <h2 id="belt-form-title">Новый пояс</h2>
+            <button class="modal__close" data-close-belt aria-label="Закрыть">×</button>
+        </div>
+        <form id="belt-form" class="form">
+            <input type="hidden" id="bf-id">
+            <div class="form__row">
+                <label class="field"><span>Название</span>
+                    <input type="text" id="bf-name" placeholder="Пояс чёрный" required></label>
+                <label class="field"><span>Цвет</span>
+                    <input type="text" id="bf-color" placeholder="Чёрный"></label>
+            </div>
+            <div class="form__row">
+                <label class="field"><span>Размер (см)</span>
+                    <input type="number" id="bf-size" placeholder="280"></label>
+                <label class="field"><span>Состав</span>
+                    <input type="text" id="bf-sostav" placeholder="100% хлопок"></label>
+            </div>
+            <label class="field"><span>Описание</span>
+                <textarea id="bf-description" rows="3" placeholder="Плотный, прошитый в несколько строчек…"></textarea></label>
+            <div class="form__row">
+                <label class="field"><span>Цена, ₽</span>
+                    <input type="number" step="0.01" id="bf-price" placeholder="990" required></label>
+                <label class="field"><span>Количество</span>
+                    <input type="number" id="bf-quantity" placeholder="20" required></label>
+            </div>
+
+            <div class="uploader">
+                <div class="uploader__top">
+                    <span>Фотографии</span>
+                    <span class="uploader__count" id="belt-img-count">0 из 3–5</span>
+                </div>
+                <label class="dropzone" id="belt-dropzone">
+                    <input type="file" id="bf-images" accept="image/*" multiple hidden>
+                    <span class="dropzone__text">Выберите 3–5 изображений</span>
+                </label>
+                <p class="uploader__note" id="belt-edit-note" hidden>
+                    При изменении: оставьте пустым, чтобы сохранить текущие фото, или выберите новые 3–5 — они заменят галерею.
+                </p>
+                <div class="previews" id="belt-previews"></div>
+            </div>
+
+            <div class="form__actions">
+                <button type="button" class="btn btn--ghost" data-close-belt>Отмена</button>
+                <button type="submit" class="btn btn--primary" id="belt-submit">Сохранить пояс</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
