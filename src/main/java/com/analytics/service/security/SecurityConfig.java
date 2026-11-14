@@ -34,7 +34,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // публичные ресурсы фронтенда
                         .requestMatchers("/", "/index.html", "/login.html", "/main.html", "/profile.html").permitAll()
-                        .requestMatchers("/payments/webhook").permitAll()
                         .requestMatchers(org.springframework.http.HttpMethod.POST, "/orders/quote").permitAll()
                         .requestMatchers("/checkout.html", "/payment-return.html", "/cart.html", "/product.html").permitAll()
                         .requestMatchers("/main", "/profile").permitAll()
