@@ -38,10 +38,6 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
-  /** id платежа в ЮKassa. Нужен, чтобы сверить статус и не провести оплату дважды. */
-    @Column(name = "payment_id")
-    private String paymentId;
-
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL,orphanRemoval = true)

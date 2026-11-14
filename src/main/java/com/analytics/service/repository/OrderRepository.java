@@ -51,18 +51,12 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "ORDER BY o.id DESC")
     List<Order> findActiveUserOrders(Long userId);
 
-    /** Заказы, которые давно ждут оплату — для фоновой сверки. */
-    @Query("SELECT o FROM Order o WHERE o.status = com.analytics.service.entity.OrderStatus.PENDING_PAYMENT " +
-           "AND o.paymentId IS NOT NULL AND o.createdAt < :before")
-    List<Order> findStuckPayments(@Param("before") java.time.LocalDateTime before);
+
 
     /** Заказ с блокировкой строки: webhook и опрос статуса не обработают оплату дважды. */
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT o FROM Order o WHERE o.id = :id")
     Optional<Order> findByIdForUpdate(@Param("id") Long id);
 
-    /** Заказы, для которых платёж так и не создался — их надо отменить и вернуть резерв. */
-    @Query("SELECT o FROM Order o WHERE o.status = com.analytics.service.entity.OrderStatus.PENDING_PAYMENT " +
-           "AND o.paymentId IS NULL AND o.createdAt < :before")
-    List<Order> findAbandoned(@Param("before") java.time.LocalDateTime before);
+
 }

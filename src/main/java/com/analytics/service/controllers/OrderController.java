@@ -2,6 +2,7 @@ package com.analytics.service.controllers;
 
 import com.analytics.service.dto.CreateOrderRequest;
 
+import com.analytics.service.dto.OrderDto;
 import com.analytics.service.services.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -19,8 +20,8 @@ public class OrderController {
 
     /** Оформить заказ и получить ссылку на оплату. */
     @PostMapping
-    public void createOrder(@RequestBody CreateOrderRequest request, Authentication authentication) {
-         orderService.createOrder(request, authentication.getName());
+    public OrderDto createOrder(@RequestBody CreateOrderRequest request, Authentication authentication) {
+         return orderService.createOrder(request, authentication.getName());
     }
 
 

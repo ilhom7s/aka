@@ -256,7 +256,7 @@ img{display:block;max-width:100%;}
         <div class="recs__head">
             <div>
                 <h2 class="recs__title">Вам может подойти</h2>
-                <div class="recs__sub">Соседние размеры товаров из вашей корзины</div>
+
             </div>
             <div class="recs__nav">
                 <button type="button" id="recs-prev" aria-label="Прокрутить назад">‹</button>
@@ -423,15 +423,15 @@ function summaryHtml(){
     const sel=ITEMS.filter(i=>SELECTED.has(i.id));
     const goods=sel.reduce((s,i)=>s+i.price*i.amount,0);
     const pieces=sel.reduce((s,i)=>s+i.amount,0);
-    const ship=goods>=5000||goods===0?0:490;
+
     return `<aside class="summary">
         <h3>Итого</h3>
         <div class="srow"><span>Выбрано</span><b>${plural(sel.length,"позиция","позиции","позиций")}</b></div>
         <div class="srow"><span>Товары</span><b>${pieces} шт · ${money(goods)} ₽</b></div>
-        <div class="srow"><span>Доставка</span><b>${ship?money(ship)+" ₽":"бесплатно"}</b></div>
-        <div class="stotal"><span>К оплате</span><b>${money(goods+ship)} ₽</b></div>
+
+        <div class="stotal"><span>К оплате</span><b>${money(goods)} ₽</b></div>
         <button class="btn btn--main" ${sel.length?"":"disabled"} onclick="checkout()">Оформить заказ</button>
-        <div class="note">Бесплатная доставка от 5 000 ₽</div>
+        <div class="note">Доставка обсуждается после оформления заказа.<br>Менеджер с вами свяжется.</div>
     </aside>`;
 }
 

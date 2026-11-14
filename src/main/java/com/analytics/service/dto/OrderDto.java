@@ -10,5 +10,5 @@ import java.util.Set;
  * DTO for {@link Order}
  */
 public record OrderDto(Long id, Long userId, String userEmail, String address, String phone, BigDecimal totalAmount,
-                       String status, String paymentId, LocalDateTime createdAt, Set<OrderItemsDto> orderItems) {
+                       String status, LocalDateTime createdAt, Set<OrderItemsDto> orderItems) {
 }

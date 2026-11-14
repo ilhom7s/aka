@@ -45,13 +45,15 @@ public class CartService {
         int total = currentQty + quantity;
 
         if (product.getQuantity() == null || product.getQuantity() < total) {
-            throw new IllegalArgumentException("Количество товара на складе недостаточно");
+            throw new IllegalArgumentException("Количество товара нету в наличии");
         }
 
-        if (existingOpt.isPresent()) {
-            CartItem existing = existingOpt.get();
-            existing.setQuantity(total);
-            cartRepository.save(existing);
+        if (existingOpt.isPresent()){
+                CartItem existing = existingOpt.get();
+                existing.setQuantity(total);
+                cartRepository.save(existing);
+
+
         } else {
             CartItem cartItem = new CartItem();
             cartItem.setQuantity(quantity);
