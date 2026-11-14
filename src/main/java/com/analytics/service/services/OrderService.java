@@ -30,7 +30,6 @@ public class OrderService {
 
     @Transactional
     public OrderDto createOrder(CreateOrderRequest request, String login){
-        orderRepository.deleteAll();
         User user = userService.findUserByEmailOrPhone(login);
         if (request.address() == null || request.address().isBlank())
             throw new IllegalArgumentException("Укажите адрес доставки");
@@ -72,7 +71,8 @@ public class OrderService {
         }
 
         order.setOrderItems(items);
-        order.setTotalAmount(goods.add(shippingFor(goods)));      // доставка входит в сумму оплаты
+        order.setTotalAmount(goods.add(shippingFor(goods)));
+        // доставка входит в сумму оплаты
         return userMapper.toOrderDto(orderRepository.save(order));
     }
     private Map<Long, Integer> groupItems(List<RequestItems> list) {

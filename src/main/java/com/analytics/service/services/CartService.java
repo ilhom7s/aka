@@ -36,7 +36,8 @@ public class CartService {
         }
 
         User user = userService.findUserByEmailOrPhone(loginToken);
-        ProductVariant product = repositoryProduct.findById(productId)
+        lockCart(user.getId());
+        ProductVariant product = repositoryProduct.findByIdForUpdate(productId)
                 .orElseThrow(() -> new NotFoundException("Товар не найден"));
 
         Optional<CartItem> existingOpt = cartRepository.findByUserIdAndVariantId(user.getId(), productId);
@@ -66,11 +67,12 @@ public class CartService {
     @Transactional
     public void updateCartItemQuantity(Long cartId, String loginToken, Integer newQuantity){
         User user = userService.findUserByEmailOrPhone(loginToken);
+        lockCart(user.getId());
         CartItem cartItem = cartRepository.findByIdAndUserId(cartId,user.getId()).orElseThrow(()->
                 new NotFoundException("Позиция не найдена")
         );
         if(newQuantity == null || newQuantity < 1) throw new IllegalArgumentException("Количество должно быть больше 0");
-        var product = repositoryProduct.findById(cartItem.getVariantId()).orElseThrow(() -> new RuntimeException("Товар не найден"));
+        var product = repositoryProduct.findByIdForUpdate(cartItem.getVariantId()).orElseThrow(() -> new RuntimeException("Товар не найден"));
         if(product.getQuantity() == null || product.getQuantity() < newQuantity) throw new IllegalArgumentException("На складе недостаточно товара");
         cartItem.setQuantity(newQuantity);
     }
@@ -83,6 +85,7 @@ public class CartService {
     @Transactional
     public void deleteCartItem(String loginToken,Long variantId){
         User user = userService.findUserByEmailOrPhone(loginToken);
+        lockCart(user.getId());
         CartItem cartItem = cartRepository.findByUserIdAndVariantId(user.getId(),variantId).orElseThrow(()->
                      new NotFoundException("Товар не найден в корзине")
                 );
@@ -92,6 +95,7 @@ public class CartService {
     @Transactional
     public void clearCart(String login){
         User user = userService.findUserByEmailOrPhone(login);
+        lockCart(user.getId());
         cartRepository.deleteByUserId(user.getId());
     }
 
@@ -123,6 +127,11 @@ public class CartService {
                 .limit(RECOMMENDATIONS_LIMIT)
                 .map(mapper::toProductVariantDto)
                 .toList();
+    }
+
+    /** Один и тот же порядок: сначала пользователь, потом вариант. Иначе add и update взаимно блокируются. */
+    private void lockCart(Long userId) {
+        userRepository.lockById(userId).orElseThrow(() -> new NotFoundException("Пользователь не найден"));
     }
 
     private static Integer parseSize(String size) {

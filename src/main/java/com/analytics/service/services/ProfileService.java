@@ -1,5 +1,7 @@
 package com.analytics.service.services;
 
+import com.analytics.service.Exceptions.AlreadyExistException;
+import com.analytics.service.Exceptions.NotMatchException;
 import com.analytics.service.dto.ChangeEmailRequestDto;
 import com.analytics.service.dto.ChangePasswordRequestDto;
 import com.analytics.service.dto.ChngePhoneRequestDto;
@@ -9,6 +11,7 @@ import com.analytics.service.entity.User;
 import com.analytics.service.repository.OrderRepository;
 import com.analytics.service.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,20 +51,33 @@ public class ProfileService {
     @Transactional
     public void changeEmail(ChangeEmailRequestDto changeEmail, String login) {
         User user = userService.findUserByEmailOrPhone(login);
-        if(!passwordEncoder.matches(changeEmail.password(), user.getPassword())){throw new RuntimeException("Пароль неверный");}
+        if(!passwordEncoder.matches(changeEmail.password(), user.getPassword())){throw new NotMatchException("Пароль неверный");}
         if(changeEmail.newEmail().equals(user.getEmail())){
             throw new RuntimeException("Новая почта должна отличаться от старой");
         }
-        user.setEmail(changeEmail.newEmail());
+        if(userRepository.exitsByEmail(changeEmail.newEmail())){
+            throw new AlreadyExistException(String.format("Почта %s занята",changeEmail.newEmail()));
+        }
+        try{
+            user.setEmail(changeEmail.newEmail());
+        }
+        catch (DataIntegrityViolationException exception){
+            throw new AlreadyExistException(String.format("Почта %s занята",changeEmail.newEmail()));
+        }
     }
     @Transactional
     public void changePhone(ChngePhoneRequestDto changePhone, String login){
         User user = userService.findUserByEmailOrPhone(login);
-        if(!passwordEncoder.matches(changePhone.password(), user.getPassword())){throw new RuntimeException("Пароль неверный");}
+        if(!passwordEncoder.matches(changePhone.password(), user.getPassword())){throw new NotMatchException("Пароль неверный");}
         if(changePhone.newPhone().equals(user.getUserPhone())){
             throw new RuntimeException("Новый номер должен отличаться от старой");
         }
-        user.setUserPhone(changePhone.newPhone());
+        if(userRepository.existsByPhone(changePhone.newPhone())) throw new AlreadyExistException(String.format("Номер %s занят", changePhone.newPhone()));
+        try{
+            user.setUserPhone(changePhone.newPhone());
+        } catch (DataIntegrityViolationException exception) {
+            throw new AlreadyExistException(String.format("Номер %s занят", changePhone.newPhone()));
+        }
     }
 
     public UserInfoResponseDto getUserInfo(String login) {

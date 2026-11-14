@@ -5,7 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "cart_items")
+@Table(name = "cart_items", uniqueConstraints = @UniqueConstraint(
+        name = "uk_cart_user_variant",
+        columnNames = {"user_id", "variant_id"}
+))
 @Getter
 @Setter
 public class CartItem {
